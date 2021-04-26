@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -16,21 +18,16 @@ import javax.persistence.Table;
 @Table(name = "film")
 public class Film {
 	@Id
-	private long id;
+	private String id;
 	private String titolo;
 	private String categoria;
-	
-	@OneToMany(mappedBy = "film", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<FilmVisti> filmVisti = new HashSet<>();
-	
-	@OneToMany(mappedBy = "film", cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<FilmDaVedere> filmDaVedere = new HashSet<>();
+	private String poster;
 	
 	public Film() {
 		super();
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -42,7 +39,7 @@ public class Film {
 		return categoria;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -53,13 +50,24 @@ public class Film {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
+	
+	public String getPoster() {
+		return poster;
+	}
 
-	public Film(long id, String titolo, String categoria) {
+	public void setPoster(String poster) {
+		this.poster = poster;
+	}
+
+	public Film(String id, String titolo, String categoria, String poster) {
 		super();
 		this.id = id;
 		this.titolo = titolo;
 		this.categoria = categoria;
+		this.poster = poster;
 	}
+
+	
 	
 	
 }

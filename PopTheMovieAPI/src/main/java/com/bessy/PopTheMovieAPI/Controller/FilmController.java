@@ -13,34 +13,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bessy.PopTheMovieAPI.Model.Film;
-import com.bessy.PopTheMovieAPI.Model.FilmDaVedere;
-import com.bessy.PopTheMovieAPI.Repository.FilmDaVedereRepository;
-import com.bessy.PopTheMovieAPI.Repository.FilmRepository;
+import com.bessy.PopTheMovieAPI.Repository.FilmCRUDRepository;
+
 
 
 
 @RestController
-@RequestMapping("/film")
+@RequestMapping("PopTheMovieAPI/film")
 public class FilmController {
 
     @Autowired
-    private FilmRepository filmRepository;
+    private FilmCRUDRepository filmRepository;
     
-    @Autowired
-    private FilmDaVedereRepository filmDaVedereRepository;
-        
     @GetMapping
     public Iterable<Film> findAllFilms() {
     	return filmRepository.findAll();
     }
-    
-    @GetMapping("/filmDaVedere")
-    public Iterable<FilmDaVedere> findAllFilmDaVedere() {
-    	return filmDaVedereRepository.findAll();
-    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Film> findFilmById(@PathVariable(value = "id") long id) {
+    public ResponseEntity<Film> findFilmById(@PathVariable(value = "id") String id) {
     	Optional<Film> film = filmRepository.findById(id);
 
         if(film.isPresent()) {
@@ -50,20 +41,6 @@ public class FilmController {
         }
     }
     
-    @GetMapping("/filmDaVedere/{id}")
-    public ResponseEntity<FilmDaVedere> findFilmDaVedereById(@PathVariable(value = "id") long id) {
-    	Optional<FilmDaVedere> filmDaVedere = filmDaVedereRepository.findById(id);
-
-        if(filmDaVedere.isPresent()) {
-        	return ResponseEntity.ok().body(filmDaVedere.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
     
-    @PostMapping
-    public Film saveFilm(@Validated @RequestBody Film film) {
-		return filmRepository.save(film);
-    }
     
 }

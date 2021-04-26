@@ -7,6 +7,6 @@ import com.bessy.PopTheMovieAPI.Model.Film;
 
 
 @Repository
-public interface FilmRepository extends CrudRepository<Film, Long>{
+public interface FilmCRUDRepository extends CrudRepository<Film, String>{
 	
 }

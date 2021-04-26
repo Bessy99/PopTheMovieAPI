@@ -20,7 +20,7 @@ public class Film {
 	@Id
 	private String id;
 	private String titolo;
-	private String categoria;
+	private String genere;
 	private String poster;
 	
 	public Film() {
@@ -35,8 +35,8 @@ public class Film {
 		return titolo;
 	}
 
-	public String getCategoria() {
-		return categoria;
+	public String getGenere() {
+		return genere;
 	}
 
 	public void setId(String id) {
@@ -47,8 +47,8 @@ public class Film {
 		this.titolo = titolo;
 	}
 
-	public void setCategoria(String categoria) {
-		this.categoria = categoria;
+	public void setGenere(String genere) {
+		this.genere = genere;
 	}
 	
 	public String getPoster() {
@@ -59,11 +59,11 @@ public class Film {
 		this.poster = poster;
 	}
 
-	public Film(String id, String titolo, String categoria, String poster) {
+	public Film(String id, String titolo, String genere, String poster) {
 		super();
 		this.id = id;
 		this.titolo = titolo;
-		this.categoria = categoria;
+		this.genere = genere;
 		this.poster = poster;
 	}
 

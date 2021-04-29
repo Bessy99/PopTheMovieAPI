@@ -36,11 +36,11 @@ public class UserController {
     }
 
     @GetMapping("/id")
-    public ResponseEntity<Utente> findUserById(@RequestParam(value = "id") String id) {
+    public ResponseEntity<Utente> findUserById(@RequestParam(value = "id") String id, @RequestParam(value = "password") String password) {
     	
     	Optional<Utente> user = userRepository.findById(id);
 
-        if(user.isPresent()) {
+        if(user.isPresent() && user.get().getPassword().equals(password)) {
             return ResponseEntity.ok().body(user.get());
         } else {
             return ResponseEntity.notFound().build();

@@ -24,13 +24,13 @@ public class Utente {
 	private String nome;
 	private String cognome;
 	
-	@ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="filmdavedere", 
                 joinColumns={@JoinColumn(name="Utente_email")}, 
                 inverseJoinColumns={@JoinColumn(name="Film_id")})
 	private Set<Film> filmDaVedere = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="filmvisti", 
                 joinColumns={@JoinColumn(name="Utente_email")}, 
                 inverseJoinColumns={@JoinColumn(name="Film_id")})

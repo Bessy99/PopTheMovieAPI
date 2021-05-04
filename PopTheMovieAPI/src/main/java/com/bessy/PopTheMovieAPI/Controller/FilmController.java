@@ -1,5 +1,6 @@
 package com.bessy.PopTheMovieAPI.Controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bessy.PopTheMovieAPI.Model.Film;
+import com.bessy.PopTheMovieAPI.Model.Film_Utente;
+import com.bessy.PopTheMovieAPI.Model.ResultAffinity;
 import com.bessy.PopTheMovieAPI.Repository.FilmCRUDRepository;
+import com.bessy.PopTheMovieAPI.Repository.HintFilmRepository;
 
 
 
@@ -24,6 +28,8 @@ public class FilmController {
 
     @Autowired
     private FilmCRUDRepository filmRepository;
+    @Autowired
+    private HintFilmRepository hintFilmRepository;
     
     @GetMapping
     public Iterable<Film> findAllFilms() {
@@ -39,6 +45,20 @@ public class FilmController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    
+    @GetMapping("/classificaAffinita/{id}")
+    public ResponseEntity<List<ResultAffinity>> findAffinita(@PathVariable(value = "id") String id) {
+    	List<ResultAffinity> listaAffinita = hintFilmRepository.findAffinity(id);
+        return ResponseEntity.ok().body(listaAffinita);
+        
+    }
+    
+    @GetMapping("/filmMaiVisti/{id}")
+    public ResponseEntity<List<Film_Utente>> findMaiVisti(@PathVariable(value = "id") String id) {
+    	List<Film_Utente> listaFilmUtenti = hintFilmRepository.findAltriFilm(id);
+        return ResponseEntity.ok().body(listaFilmUtenti);
+        
     }
     
     

@@ -1,6 +1,7 @@
 package com.bessy.PopTheMovieAPI.Controller;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bessy.PopTheMovieAPI.Model.BodyAddFilmAnswer;
 import com.bessy.PopTheMovieAPI.Model.Film;
 import com.bessy.PopTheMovieAPI.Model.Utente;
 import com.bessy.PopTheMovieAPI.Repository.FilmCRUDRepository;
@@ -53,48 +55,50 @@ public class UserController {
     }
     
     @PostMapping("/addFilm")
-    public ResponseEntity<Utente> addFilm(@Validated @RequestBody Film film, @RequestBody Utente utente, @PathVariable(value = "modalita") String modalita) {
-    	Optional<Utente> optionalUser = userRepository.findById(utente.getEmail());
+    public Utente addFilm(@Validated @RequestBody BodyAddFilmAnswer body) {
+    	String email = body.getEmail();
+    	String modalita = body.getModalita();
+    	Film film = body.getFilm();
+    	
+    	Optional<Utente> optionalUser = userRepository.findById(email);
     	if(optionalUser.isPresent()) {
     		Utente u = optionalUser.get();
-	    	if(modalita == "visti") {
+    		Utente newU = new Utente(u.getEmail(),u.getPassword(), u.getNome(), u.getCognome(), u.getFilmVisti(), u.getFilmDaVedere());
+	    	if(modalita.equals("visti")) {
 	    		Optional<Film> f = filmRepository.findById(film.getId());
 	    		if(f.isPresent()) {
-	    			//? necessario?
 	    			userRepository.delete(u);
-	    			u.getFilmVisti().add(f.get());
-					userRepository.save(u);
+	    			Film filmPresent = f.get();
+	    			newU.getFilmVisti().add(film);
+					userRepository.save(newU);
 	    		}
 				else { 
 					Film newFilm = filmRepository.save(film);
-					//? necessario?
 					userRepository.delete(u);
-					u.getFilmVisti().add(newFilm);
-					userRepository.save(u);
+					newU.getFilmVisti().add(newFilm);
+					userRepository.save(newU);
 				}
 			}
-			else if(modalita == "daVedere") {
+			else if(modalita.equals("daVedere")) {
 				Optional<Film> f = filmRepository.findById(film.getId());
 	    		if(f.isPresent()) {
-	    			//? necessario?
 	    			userRepository.delete(u);
-	    			u.getFilmDaVedere().add(f.get());
-					userRepository.save(u);
+	    			newU.getFilmDaVedere().add(f.get());
+					userRepository.save(newU);
 	    		}
 				else { 
 					Film newFilm = filmRepository.save(film);
-					//? necessario?
 					userRepository.delete(u);
-					u.getFilmDaVedere().add(newFilm);
-					userRepository.save(u);
+					newU.getFilmDaVedere().add(newFilm);
+					userRepository.save(newU);
 				}
 				
 			}
-	    
-	    	return ResponseEntity.ok().body(u);
+			
+	     return newU;
     	}
     	
-    	return ResponseEntity.notFound().build();
+    	return null;
 			
     }
     

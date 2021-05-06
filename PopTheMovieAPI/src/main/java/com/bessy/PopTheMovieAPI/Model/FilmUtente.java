@@ -1,11 +1,11 @@
 package com.bessy.PopTheMovieAPI.Model;
 
-public class Film_Utente {
+public class FilmUtente {
 	
 	private String email;
 	private String film_id;
 	
-	public Film_Utente(){
+	public FilmUtente(){
 		super();
 	}
 

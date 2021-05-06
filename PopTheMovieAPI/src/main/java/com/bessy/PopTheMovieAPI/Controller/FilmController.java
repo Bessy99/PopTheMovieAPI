@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bessy.PopTheMovieAPI.Model.Film;
-import com.bessy.PopTheMovieAPI.Model.Film_Utente;
+import com.bessy.PopTheMovieAPI.Model.FilmUtente;
 import com.bessy.PopTheMovieAPI.Model.ResultAffinity;
 import com.bessy.PopTheMovieAPI.Repository.FilmCRUDRepository;
 import com.bessy.PopTheMovieAPI.Repository.HintFilmRepository;
@@ -47,17 +48,24 @@ public class FilmController {
         }
     }
     
-    @GetMapping("/classificaAffinita/{id}")
-    public ResponseEntity<List<ResultAffinity>> findAffinita(@PathVariable(value = "id") String id) {
+    @GetMapping("/classificaAffinita")
+    public ResponseEntity<List<ResultAffinity>> findAffinita(@RequestParam(value = "id") String id) {
     	List<ResultAffinity> listaAffinita = hintFilmRepository.findAffinity(id);
         return ResponseEntity.ok().body(listaAffinita);
         
     }
     
-    @GetMapping("/filmMaiVisti/{id}")
-    public ResponseEntity<List<Film_Utente>> findMaiVisti(@PathVariable(value = "id") String id) {
-    	List<Film_Utente> listaFilmUtenti = hintFilmRepository.findAltriFilm(id);
+    @GetMapping("/filmMaiVisti")
+    public ResponseEntity<List<FilmUtente>> findMaiVisti(@RequestParam(value = "id") String id) {
+    	List<FilmUtente> listaFilmUtenti = hintFilmRepository.findAltriFilm(id);
         return ResponseEntity.ok().body(listaFilmUtenti);
+        
+    }
+    
+    @GetMapping("/filmInClassifica")
+    public ResponseEntity<List<Film>> findFilmInClassifica(@RequestParam(value = "id") String id) {
+    	List<Film> listaClassificaFilm = hintFilmRepository.findClassificaFilm(id);
+        return ResponseEntity.ok().body(listaClassificaFilm);
         
     }
     

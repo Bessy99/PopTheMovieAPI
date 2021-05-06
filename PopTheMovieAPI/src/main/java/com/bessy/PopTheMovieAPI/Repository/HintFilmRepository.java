@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.bessy.PopTheMovieAPI.Model.Film_Utente;
+import com.bessy.PopTheMovieAPI.Model.Film;
+import com.bessy.PopTheMovieAPI.Model.FilmUtente;
 import com.bessy.PopTheMovieAPI.Model.ResultAffinity;
 
 
@@ -21,11 +22,16 @@ public class HintFilmRepository {
 		return risposta;
 	}
 	
-	public List<Film_Utente> findAltriFilm(String email){
+	public List<FilmUtente> findAltriFilm(String email){
 		String sql = "CALL filmVistiDaAltri('"+email+"');";
-		List<Film_Utente> risposta = jdbcTemplate.query(sql,new Film_UtenteMapper());
+		List<FilmUtente> risposta = jdbcTemplate.query(sql,new FilmUtenteMapper());
 		return risposta;
 	}
 	
+	public List<Film> findClassificaFilm(String email){
+		String sql = "CALL filmInClassifica('"+email+"');";
+		List<Film> risposta = jdbcTemplate.query(sql,new FilmMapper());
+		return risposta;
+	}
 
 }

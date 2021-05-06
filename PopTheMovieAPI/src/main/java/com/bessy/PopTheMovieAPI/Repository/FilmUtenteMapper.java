@@ -5,13 +5,13 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.bessy.PopTheMovieAPI.Model.Film_Utente;
+import com.bessy.PopTheMovieAPI.Model.FilmUtente;
 
 
-public class Film_UtenteMapper implements RowMapper<Film_Utente>  {
+public class FilmUtenteMapper implements RowMapper<FilmUtente>  {
 	
-	public Film_Utente mapRow(ResultSet row, int rowNum)throws SQLException{
-		Film_Utente res = new Film_Utente();
+	public FilmUtente mapRow(ResultSet row, int rowNum)throws SQLException{
+		FilmUtente res = new FilmUtente();
 		
 		try {
 			res.setFilm_id(row.getString("Film_id").trim());

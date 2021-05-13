@@ -22,6 +22,7 @@ public class Film {
 	private String titolo;
 	private String genere;
 	private String poster;
+	private String durata;
 	
 	public Film() {
 		super();
@@ -59,12 +60,21 @@ public class Film {
 		this.poster = poster;
 	}
 
-	public Film(String id, String titolo, String genere, String poster) {
+	public String getDurata() {
+		return durata;
+	}
+
+	public void setDurata(String durata) {
+		this.durata = durata;
+	}
+
+	public Film(String id, String titolo, String genere, String poster, String durata) {
 		super();
 		this.id = id;
 		this.titolo = titolo;
 		this.genere = genere;
 		this.poster = poster;
+		this.durata = durata;
 	}
 
 	

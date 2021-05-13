@@ -18,6 +18,7 @@ public class FilmMapper implements RowMapper<Film>  {
 			res.setTitolo(row.getString("titolo").trim());
 			res.setGenere(row.getString("genere").trim());
 			res.setPoster(row.getString("poster").trim());
+			res.setDurata(row.getString("durata").trim());
 		}
 		catch (Exception ex)
 		 {

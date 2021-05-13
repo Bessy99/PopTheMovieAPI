@@ -65,25 +65,24 @@ public class UserController {
     		Utente u = optionalUser.get();
     		Utente newU = new Utente(u.getEmail(),u.getPassword(), u.getNome(), u.getCognome(), u.getFilmVisti(), u.getFilmDaVedere());
 	    	if(modalita.equals("visti")) {
-	    		Optional<Film> f = filmRepository.findById(film.getId());
-	    		if(f.isPresent()) {
-	    			userRepository.delete(u);
-	    			Film filmPresent = f.get();
-	    			newU.getFilmVisti().add(film);
-					userRepository.save(newU);
-	    		}
-				else { 
-					Film newFilm = filmRepository.save(film);
-					userRepository.delete(u);
-					newU.getFilmVisti().add(newFilm);
-					userRepository.save(newU);
-				}
+	    			Film filmPersistent = filmChange(film);
+	    			if(filmPersistent!=null) {
+		    			userRepository.delete(u);
+		    			newU.getFilmVisti().add(filmPersistent);
+						userRepository.save(newU);
+						}
+					else { 
+						Film newFilm = filmRepository.save(film);
+						userRepository.delete(u);
+						newU.getFilmVisti().add(newFilm);
+						userRepository.save(newU);
+					}
 			}
 			else if(modalita.equals("daVedere")) {
-				Optional<Film> f = filmRepository.findById(film.getId());
-	    		if(f.isPresent()) {
+				Film filmPersistent = filmChange(film);
+	    		if(filmPersistent!=null) {
 	    			userRepository.delete(u);
-	    			newU.getFilmDaVedere().add(f.get());
+	    			newU.getFilmDaVedere().add(filmPersistent);
 					userRepository.save(newU);
 	    		}
 				else { 
@@ -92,7 +91,6 @@ public class UserController {
 					newU.getFilmDaVedere().add(newFilm);
 					userRepository.save(newU);
 				}
-				
 			}
 			
 	     return newU;
@@ -100,6 +98,23 @@ public class UserController {
     	
     	return null;
 			
+    }
+    
+    private Film filmChange(Film film) {
+    	Optional<Film> f = filmRepository.findById(film.getId());
+    	if(f.get()!=null) {
+    		Film filmPersistent = f.get();
+    		if(!filmPersistent.getDurata().equals(film.getDurata()))
+    			filmPersistent.setDurata(film.getDurata());
+    		if(!filmPersistent.getTitolo().equals(film.getTitolo()))
+    			filmPersistent.setTitolo(film.getTitolo());
+    		if(!filmPersistent.getGenere().equals(film.getGenere()))
+    			filmPersistent.setGenere(film.getGenere());
+    		if(!filmPersistent.getPoster().equals(film.getPoster()))
+    			filmPersistent.setPoster(film.getPoster());
+    		return filmPersistent;
+    	}
+    	return null;
     }
     
 }

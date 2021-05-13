@@ -77,6 +77,14 @@ public class Film {
 		this.durata = durata;
 	}
 
+	@Override
+	public String toString() {
+		return "Film [id=" + id + ", titolo=" + titolo + ", genere=" + genere + ", poster=" + poster + ", durata="
+				+ durata + "]";
+	}
+	
+	
+
 	
 	
 	

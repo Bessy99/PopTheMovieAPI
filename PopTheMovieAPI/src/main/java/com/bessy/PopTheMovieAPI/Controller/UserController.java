@@ -63,37 +63,28 @@ public class UserController {
     	Optional<Utente> optionalUser = userRepository.findById(email);
     	if(optionalUser.isPresent()) {
     		Utente u = optionalUser.get();
-    		Utente newU = new Utente(u.getEmail(),u.getPassword(), u.getNome(), u.getCognome(), u.getFilmVisti(), u.getFilmDaVedere());
 	    	if(modalita.equals("visti")) {
 	    			Film filmPersistent = filmChange(film);
 	    			if(filmPersistent!=null) {
-		    			userRepository.delete(u);
-		    			newU.getFilmVisti().add(filmPersistent);
-						userRepository.save(newU);
+		    			u.getFilmVisti().add(filmPersistent);
 						}
 					else { 
 						Film newFilm = filmRepository.save(film);
-						userRepository.delete(u);
-						newU.getFilmVisti().add(newFilm);
-						userRepository.save(newU);
+						u.getFilmVisti().add(newFilm);
 					}
 			}
 			else if(modalita.equals("daVedere")) {
 				Film filmPersistent = filmChange(film);
 	    		if(filmPersistent!=null) {
-	    			userRepository.delete(u);
-	    			newU.getFilmDaVedere().add(filmPersistent);
-					userRepository.save(newU);
+	    			u.getFilmDaVedere().add(filmPersistent);
 	    		}
 				else { 
 					Film newFilm = filmRepository.save(film);
-					userRepository.delete(u);
-					newU.getFilmDaVedere().add(newFilm);
-					userRepository.save(newU);
+					u.getFilmDaVedere().add(newFilm);
 				}
 			}
 			
-	     return newU;
+	     return u;
     	}
     	
     	return null;
@@ -102,7 +93,7 @@ public class UserController {
     
     private Film filmChange(Film film) {
     	Optional<Film> f = filmRepository.findById(film.getId());
-    	if(f.get()!=null) {
+    	if(f.isPresent()) {
     		Film filmPersistent = f.get();
     		if(!filmPersistent.getDurata().equals(film.getDurata()))
     			filmPersistent.setDurata(film.getDurata());

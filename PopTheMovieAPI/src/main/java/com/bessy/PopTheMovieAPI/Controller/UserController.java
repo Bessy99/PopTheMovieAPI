@@ -63,28 +63,37 @@ public class UserController {
     	Optional<Utente> optionalUser = userRepository.findById(email);
     	if(optionalUser.isPresent()) {
     		Utente u = optionalUser.get();
+    		Utente newU = new Utente(u.getEmail(),u.getPassword(), u.getNome(), u.getCognome(), u.getFilmVisti(), u.getFilmDaVedere());
 	    	if(modalita.equals("visti")) {
 	    			Film filmPersistent = filmChange(film);
 	    			if(filmPersistent!=null) {
-		    			u.getFilmVisti().add(filmPersistent);
+		    			userRepository.delete(u);
+		    			newU.getFilmVisti().add(filmPersistent);
+						userRepository.save(newU);
 						}
 					else { 
 						Film newFilm = filmRepository.save(film);
-						u.getFilmVisti().add(newFilm);
+						userRepository.delete(u);
+						newU.getFilmVisti().add(newFilm);
+						userRepository.save(newU);
 					}
 			}
 			else if(modalita.equals("daVedere")) {
 				Film filmPersistent = filmChange(film);
 	    		if(filmPersistent!=null) {
-	    			u.getFilmDaVedere().add(filmPersistent);
+	    			userRepository.delete(u);
+	    			newU.getFilmDaVedere().add(filmPersistent);
+					userRepository.save(newU);
 	    		}
 				else { 
 					Film newFilm = filmRepository.save(film);
-					u.getFilmDaVedere().add(newFilm);
+					userRepository.delete(u);
+					newU.getFilmDaVedere().add(newFilm);
+					userRepository.save(newU);
 				}
 			}
 			
-	     return u;
+	     return newU;
     	}
     	
     	return null;

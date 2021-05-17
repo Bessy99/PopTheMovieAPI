@@ -36,6 +36,17 @@ public class UserController {
     public Iterable<Utente> findAllUsers() {
     	return userRepository.findAll();
     }
+    
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> userExists(@RequestParam(value = "id") String id, @RequestParam (value = "password") String password){
+    	Optional<Utente> user = userRepository.findById(id);
+
+        if(user.isPresent() && user.get().getPassword().equals(password)) {
+            return ResponseEntity.ok().body(true);
+        } else {
+            return ResponseEntity.ok().body(false);
+        }
+    }
 
     @GetMapping("/id")
     public ResponseEntity<Utente> findUserById(@RequestParam(value = "id") String id, @RequestParam(value = "password") String password) {
@@ -55,7 +66,7 @@ public class UserController {
     }
     
     @PostMapping("/addFilm")
-    public Utente addFilm(@Validated @RequestBody BodyAddFilmAnswer body) {
+    public String addFilm(@Validated @RequestBody BodyAddFilmAnswer body) {
     	String email = body.getEmail();
     	String modalita = body.getModalita();
     	Film film = body.getFilm();
@@ -93,10 +104,10 @@ public class UserController {
 				}
 			}
 			
-	     return newU;
+	     return "lista aggiornata";
     	}
     	
-    	return null;
+    	return "utente non trovato";
 			
     }
     

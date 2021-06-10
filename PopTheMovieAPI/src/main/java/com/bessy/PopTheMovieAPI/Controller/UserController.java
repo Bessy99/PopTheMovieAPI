@@ -1,5 +1,6 @@
 package com.bessy.PopTheMovieAPI.Controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bessy.PopTheMovieAPI.Model.BodyAddFilmAnswer;
+import com.bessy.PopTheMovieAPI.Model.BodyRemoveFilmAnswer;
 import com.bessy.PopTheMovieAPI.Model.Film;
+import com.bessy.PopTheMovieAPI.Model.FilmUtente;
 import com.bessy.PopTheMovieAPI.Model.Utente;
 import com.bessy.PopTheMovieAPI.Repository.FilmCRUDRepository;
 import com.bessy.PopTheMovieAPI.Repository.UserCRUDRepository;
@@ -66,7 +69,7 @@ public class UserController {
     }
     
     @PostMapping("/addFilm")
-    public String addFilm(@Validated @RequestBody BodyAddFilmAnswer body) {
+    public ResponseEntity<String> addFilm(@Validated @RequestBody BodyAddFilmAnswer body) {
     	String email = body.getEmail();
     	String modalita = body.getModalita();
     	Film film = body.getFilm();
@@ -104,10 +107,58 @@ public class UserController {
 				}
 			}
 			
-	     return "lista aggiornata";
+	     return ResponseEntity.ok().body("lista aggiornata");
     	}
     	
-    	return "utente non trovato";
+    	return ResponseEntity.ok().body("utente non trovato");
+			
+    }
+    
+    @PostMapping("/removeFilm")
+    public ResponseEntity<String> removeFilm(@Validated @RequestBody BodyRemoveFilmAnswer body) {
+    	String email = body.getEmail();
+    	String modalita = body.getModalita();
+    	String filmId = body.getFilmId();
+    	
+    	Optional<Utente> optionalUser = userRepository.findById(email);
+    	if(optionalUser.isPresent()) {
+    		Utente u = optionalUser.get();
+    		Utente newU = new Utente(u.getEmail(),u.getPassword(), u.getNome(), u.getCognome(), u.getFilmVisti(), u.getFilmDaVedere());
+    		if(modalita.equals("visti")) {
+	    		Film filmToRemove = null;
+	    		for(Film f : u.getFilmVisti()) {
+	    			if(f.getId().equals(filmId)) {
+	    				filmToRemove = f;
+	    				break;
+	    			}
+	    		 }
+	    		if(filmToRemove != null) {
+	    			Set<Film> filmList = u.getFilmVisti();
+	    			filmList.remove(filmToRemove);
+	    			newU.setFilmVisti(filmList);
+	    			userRepository.delete(u);
+    				userRepository.save(newU);
+	    		}
+    		}
+    		else if(modalita.equals("daVedere")) {
+    			Film filmToRemove = null;
+    			for(Film f : u.getFilmDaVedere()) {
+        			if(f.getId().equals(filmId)) {
+        				filmToRemove = f;
+        				break;
+        			}
+    			}
+    			if(filmToRemove != null) {
+    				Set<Film> filmList = u.getFilmDaVedere();
+	    			filmList.remove(filmToRemove);
+	    			newU.setFilmDaVedere(filmList);
+	    			userRepository.delete(u);
+    				userRepository.save(newU);
+	    		}
+        	}
+    		return ResponseEntity.ok().body("lista aggiornata");
+    	}
+    	return ResponseEntity.ok().body("utente non trovato");
 			
     }
     

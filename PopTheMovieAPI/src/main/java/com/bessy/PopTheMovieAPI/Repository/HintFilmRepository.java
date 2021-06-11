@@ -16,6 +16,8 @@ public class HintFilmRepository {
 	@Autowired 
 	JdbcTemplate jdbcTemplate;
 	
+	/*
+	
 	public List<ResultAffinity> findAffinity(String email){
 		String sql = "CALL classificaAffinita('"+email+"');";
 		List<ResultAffinity> risposta = jdbcTemplate.query(sql,new AffinityMapper());
@@ -28,8 +30,16 @@ public class HintFilmRepository {
 		return risposta;
 	}
 	
+	*/
+	
 	public List<Film> findClassificaFilm(String email){
 		String sql = "CALL filmInClassifica('"+email+"');";
+		List<Film> risposta = jdbcTemplate.query(sql,new FilmMapper());
+		return risposta;
+	}
+
+	public List<Film> findClassificaInversaFilm(String email) {
+		String sql = "CALL filmInClassificaInversa('"+email+"');";
 		List<Film> risposta = jdbcTemplate.query(sql,new FilmMapper());
 		return risposta;
 	}

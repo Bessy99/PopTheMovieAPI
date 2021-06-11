@@ -45,6 +45,7 @@ public class FilmController {
         }
     }
     
+    /*
     @GetMapping("/classificaAffinita")
     public ResponseEntity<List<ResultAffinity>> findAffinita(@RequestParam(value = "id") String id) {
     	List<ResultAffinity> listaAffinita = hintFilmRepository.findAffinity(id);
@@ -58,10 +59,18 @@ public class FilmController {
         return ResponseEntity.ok().body(listaFilmUtenti);
         
     }
+    */
     
     @GetMapping("/filmInClassifica")
     public ResponseEntity<List<Film>> findFilmInClassifica(@RequestParam(value = "id") String id) {
     	List<Film> listaClassificaFilm = hintFilmRepository.findClassificaFilm(id);
+        return ResponseEntity.ok().body(listaClassificaFilm);
+        
+    }
+    
+    @GetMapping("/filmInClassificaInversa")
+    public ResponseEntity<List<Film>> findFilmInClassificaInversa(@RequestParam(value = "id") String id) {
+    	List<Film> listaClassificaFilm = hintFilmRepository.findClassificaInversaFilm(id);
         return ResponseEntity.ok().body(listaClassificaFilm);
         
     }

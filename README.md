@@ -1,7 +1,7 @@
 # PopTheMovieAPI
 Server REST di supporto all'applicazione PopTheMovie.
 
-Creare un database su MySQL mediante reverse 
+Creare un database su MySQL eseguendo il file sql: PopTheMovieDatabase.sql
 
 Istruzioni di avvio:
 - Importare il progetto su Eclipse come Springboot Project

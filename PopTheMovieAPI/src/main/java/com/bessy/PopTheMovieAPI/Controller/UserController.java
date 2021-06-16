@@ -156,9 +156,11 @@ public class UserController {
     				userRepository.save(newU);
 	    		}
         	}
-    		return ResponseEntity.ok().body("lista aggiornata");
+    		String s = "lista aggiornata";
+    		return ResponseEntity.ok().body(s);
     	}
-    	return ResponseEntity.ok().body("utente non trovato");
+    	String s = "utente non trovato";
+    	return ResponseEntity.ok().body(s);
 			
     }
     
